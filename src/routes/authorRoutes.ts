@@ -7,36 +7,43 @@ const router = Router();
 const authors: Author[] = [
     {
         id: 1,
-        name: "J.K. Rowling",
-        email: "jkrowling@example.com"
+        name: "John Doe",
+        email: "jdoe@example.com"
     },
     {
         id: 2,
-        name: "George R.R. Martin",
-        email: "grrm@example.com"
+        name: "John cena",
+        email: "jcena@example.com"
     }
 ];
 
 // GET /authors
-// Returns all authors
+// returns all authors
 // tell Express in server.ts that this router represents /authors
 router.get("/", (req, res) => {
     res.status(200).json(authors);
 });
 
 // POST /authors
-// Creates a new author
+// creates a new author
 router.post("/", (req, res) => {
     const { name, email } = req.body;
-
-    const newAuthor: Author = {
-        id: authors.length + 1,
-        name,
-        email
-    };
+    const newAuthor: Author = {id: authors.length + 1, name, email};
 
     authors.push(newAuthor);
     res.status(201).json(newAuthor);
+});
+
+// GET /authors/:id
+// returns a single author by ID
+router.get("/:id", (req, res) => {
+    const id = Number(req.params.id);
+    const author = authors.find((author) => author.id === id);
+
+    if (!author) {
+        return res.status(404).json({message: "Author not found"});
+    }
+    res.status(200).json(author);
 });
 
 export default router;
