@@ -2,7 +2,6 @@ import { Router } from "express";
 import { Author } from "../models/author";
 
 const router = Router();
-
 // In-memory array of authors
 const authors: Author[] = [
     {
@@ -43,6 +42,23 @@ router.get("/:id", (req, res) => {
     if (!author) {
         return res.status(404).json({message: "Author not found"});
     }
+    res.status(200).json(author);
+});
+
+// PUT /authors/:id
+// Updates an existing author
+router.put("/:id", (req, res) => {
+    const id = Number(req.params.id);
+    const author = authors.find((author) => author.id === id);
+
+    if (!author) {
+        return res.status(404).json({message: "Author not found"});
+    }
+
+    const { name, email } = req.body;
+    author.name = name;
+    author.email = email;
+
     res.status(200).json(author);
 });
 
