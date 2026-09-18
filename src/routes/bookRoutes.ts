@@ -47,4 +47,36 @@ router.get("/:id", (req, res) => {
     res.status(200).json(book);
 });
 
+// PUT /books/:id
+// Updates an existing book
+router.put("/:id", (req, res) => {
+    const id = Number(req.params.id);
+    const book = books.find((book) => book.id === id);
+
+    if (!book) {
+        return res.status(404).json({message: "Book not found"});
+    }
+
+    const { title, year, authorId } = req.body;
+    book.title = title;
+    book.year = year;
+    book.authorId = authorId;
+
+    res.status(200).json(book);
+});
+
+// DELETE /books/:id
+// Deletes an existing book
+router.delete("/:id", (req, res) => {
+    const id = Number(req.params.id);
+    const bookIndex = books.findIndex((book) => book.id === id);
+
+    if (bookIndex === -1) {
+        return res.status(404).json({message: "Book not found"});
+    }
+    const deletedBook = books.splice(bookIndex, 1)[0];
+    res.status(200).json({message: "Book deleted successfully"});
+});
+
+
 export default router;
