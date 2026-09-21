@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Book } from "../models/book";
 import { books } from "../data/books"
+import { validateBook } from "../middleware/validation";
 const router = Router();
 
 
@@ -13,7 +14,7 @@ router.get("/", (req, res) => {
 
 // POST /books
 // create a new book
-router.post("/", (req, res) => {
+router.post("/", validateBook, (req, res) => {
     const { title, year, authorId } = req.body;
     const newBook: Book = {id: books.length + 1, title, year, authorId};
 
@@ -35,7 +36,7 @@ router.get("/:id", (req, res) => {
 
 // PUT /books/:id
 // update an existing book
-router.put("/:id", (req, res) => {
+router.put("/:id", validateBook, (req, res) => {
     const id = Number(req.params.id);
     const book = books.find((book) => book.id === id);
 

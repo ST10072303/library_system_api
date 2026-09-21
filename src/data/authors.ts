@@ -4,12 +4,12 @@ import { Author } from "../models/author";
 export const authors: Author[] = [
     {
         id: 1,
-        name: "J.K. Rowling",
-        email: "jkrowling@example.com"
+        name: "John Doe",
+        email: "jdoe@example.com"
     },
     {
         id: 2,
-        name: "George R.R. Martin",
-        email: "grrm@example.com"
+        name: "John Cena",
+        email: "jcena@example.com"
     }
 ];

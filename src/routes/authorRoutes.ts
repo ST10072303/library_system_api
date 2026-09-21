@@ -1,10 +1,9 @@
 import { Router } from "express";
 import { Author } from "../models/author";
 import { authors } from "../data/authors";
+import { validateAuthor } from "../middleware/validation";
 
 const router = Router();
-// In-memory array of authors
-
 
 // GET /authors
 // returns all authors
@@ -15,7 +14,7 @@ router.get("/", (req, res) => {
 
 // POST /authors
 // creates a new author
-router.post("/", (req, res) => {
+router.post("/", validateAuthor, (req, res) => {
     const { name, email } = req.body;
     const newAuthor: Author = {id: authors.length + 1, name, email};
 
@@ -37,7 +36,7 @@ router.get("/:id", (req, res) => {
 
 // PUT /authors/:id
 // Updates an existing author
-router.put("/:id", (req, res) => {
+router.put("/:id", validateAuthor, (req, res) => {
     const id = Number(req.params.id);
     const author = authors.find((author) => author.id === id);
 
