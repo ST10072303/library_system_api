@@ -1,32 +1,18 @@
 import { Router } from "express";
 import { Book } from "../models/book";
-
+import { books } from "../data/books"
 const router = Router();
 
-// In-memory array of books
-const books: Book[] = [
-    {
-        id: 1,
-        title: "Harry Potter and the Philosopher's Stone",
-        year: 1997,
-        authorId: 1
-    },
-    {
-        id: 2,
-        title: "A Game of Thrones",
-        year: 1996,
-        authorId: 2
-    }
-];
+
 
 // GET /books
-// Returns all books
+// return all books
 router.get("/", (req, res) => {
     res.status(200).json(books);
 });
 
 // POST /books
-// Creates a new book
+// create a new book
 router.post("/", (req, res) => {
     const { title, year, authorId } = req.body;
     const newBook: Book = {id: books.length + 1, title, year, authorId};
@@ -36,7 +22,7 @@ router.post("/", (req, res) => {
 });
 
 // GET /books/:id
-// Returns a single book by ID
+// return a single book by ID
 router.get("/:id", (req, res) => {
     const id = Number(req.params.id);
     const book = books.find((book) => book.id === id);
@@ -48,7 +34,7 @@ router.get("/:id", (req, res) => {
 });
 
 // PUT /books/:id
-// Updates an existing book
+// update an existing book
 router.put("/:id", (req, res) => {
     const id = Number(req.params.id);
     const book = books.find((book) => book.id === id);
@@ -66,7 +52,7 @@ router.put("/:id", (req, res) => {
 });
 
 // DELETE /books/:id
-// Deletes an existing book
+// delete an existing book
 router.delete("/:id", (req, res) => {
     const id = Number(req.params.id);
     const bookIndex = books.findIndex((book) => book.id === id);

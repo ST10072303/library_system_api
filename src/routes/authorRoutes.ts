@@ -1,20 +1,10 @@
 import { Router } from "express";
 import { Author } from "../models/author";
+import { authors } from "../data/authors";
 
 const router = Router();
 // In-memory array of authors
-const authors: Author[] = [
-    {
-        id: 1,
-        name: "John Doe",
-        email: "jdoe@example.com"
-    },
-    {
-        id: 2,
-        name: "John cena",
-        email: "jcena@example.com"
-    }
-];
+
 
 // GET /authors
 // returns all authors
