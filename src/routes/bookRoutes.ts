@@ -16,14 +16,15 @@ router.get("/", (req, res) => {
 router.post("/", validateBook, (req, res) => {
     const { title, year, authorId } = req.body;
     const duplicateBook = books.find((book) =>
-            book.title.toLowerCase() === title.toLowerCase() &&
-            book.authorId === authorId
+        book.title.toLowerCase() === title.toLowerCase() &&
+        book.authorId === authorId
     );
 
     if (duplicateBook) {
         return res.status(409).json({message: "A book with this title already exists for this author"});
     }
-    const newBook: Book = {id: books.length + 1, title, year, authorId};
+    const newBook: Book = {id: books.length > 0 
+        ? Math.max(...books.map((book) => book.id)) + 1 : 1, title, year, authorId};
     books.push(newBook);
     res.status(201).json(newBook);
 });
@@ -41,7 +42,7 @@ router.get("/:id", (req, res) => {
 });
 
 // PUT /books/:id
-// Updates an existing book
+// updates an existing book
 router.put("/:id", validateBook, (req, res) => {
     const id = Number(req.params.id);
     const book = books.find((book) => book.id === id);

@@ -17,7 +17,8 @@ router.get("/", (req, res) => {
 // creates a new author
 router.post("/", validateAuthor, (req, res) => {
     const { name, email } = req.body;
-    const newAuthor: Author = {id: authors.length + 1, name, email};
+    const newAuthor: Author = {id: authors.length > 0
+        ? Math.max(...authors.map((author) => author.id)) + 1 : 1, name, email};
 
     authors.push(newAuthor);
     res.status(201).json(newAuthor);
