@@ -3,22 +3,31 @@ import authorRoutes from "./routes/authorRoutes";
 import { logger } from "./middleware/logger";
 import bookRoutes from "./routes/bookRoutes";
 import bodyParser from "body-parser";
+import { errorHandler } from "./middleware/errorHandler";
 
 const app: Express = express();
 const PORT = process.env.PORT || 3000;
 
-// Allows the API to receive JSON data
+// allows the API to receive JSON data
 app.use(express.json());
 app.use(bodyParser.json())
 
-// Logger middleware
+// logger middleware
 app.use(logger);
 
-// Author routes
+// author routes
 app.use("/authors", authorRoutes);
 
-// Book routes
+// book routes
 app.use("/books", bookRoutes);
+
+// error handling
+app.use(errorHandler);
+
+// nandle requests for routes that do not exist
+app.use((req, res) => {
+    res.status(404).json({message: "Route not found"});
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

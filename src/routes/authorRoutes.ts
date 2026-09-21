@@ -2,6 +2,7 @@ import { Router } from "express";
 import { Author } from "../models/author";
 import { authors } from "../data/authors";
 import { validateAuthor } from "../middleware/validation";
+import { books } from "../data/books";
 
 const router = Router();
 
@@ -35,7 +36,7 @@ router.get("/:id", (req, res) => {
 });
 
 // PUT /authors/:id
-// Updates an existing author
+// updates an existing author
 router.put("/:id", validateAuthor, (req, res) => {
     const id = Number(req.params.id);
     const author = authors.find((author) => author.id === id);
@@ -52,7 +53,7 @@ router.put("/:id", validateAuthor, (req, res) => {
 });
 
 // DELETE /authors/:id
-// Deletes an existing author
+// deletes an existing author
 router.delete("/:id", (req, res) => {
     const id = Number(req.params.id);
     const authorIndex = authors.findIndex((author) => author.id === id);
@@ -63,6 +64,19 @@ router.delete("/:id", (req, res) => {
 
     const deletedAuthor = authors.splice(authorIndex, 1)[0];
     res.status(200).json({message: "Author deleted successfully"});
+});
+
+// GET /authors/:id/books
+// returns all books written by a specific author
+router.get("/:id/books", (req, res) => {
+    const authorId = Number(req.params.id);
+    const author = authors.find((author) => author.id === authorId);
+
+    if (!author) {
+        return res.status(404).json({message: "Author not found"});
+    }
+    const authorBooks = books.filter((book) => book.authorId === authorId);
+    res.status(200).json(authorBooks);
 });
 
 export default router;
